@@ -39,10 +39,44 @@ public class Carta {
     }
 
     public NombreCarta obtenerNombre(){
-        return null;
+        /*
+        * Obtiene el nombre que corresponde al número de la carta
+         */
+        int numero = indice % 13;
+        if (numero == 0){
+            numero = 13;
+        }
+        return NombreCarta.values()[numero];
     }
   
     public int obtenerValor(){
+        return 0;
+    }
+
+  public void mostrarCarta(int x, int y, JPanel panel, boolean ocultar) {
+        /*
+         Este metodo recibe las coordenadas donde se ubicara el objeto que mostrará la imagen
+         */
+        String nombreDeImagen;
+        if (ocultar) {
+            nombreDeImagen = "images/TAPADA.JPG";
+        } else {
+            nombreDeImagen = "images/CARTA" + String.valueOf(this.indice) + ".JPG";
+        }
+        //Cargar imagen
+        ImageIcon imagenCarta = new ImageIcon(getClass().getResource(nombreDeImagen));
+
+        //Crear instancia de Label para mostrar la imagen
+        JLabel labelCarta = new JLabel(imagenCarta);
+
+        //Definir posición y dimensiones de la imagen
+        labelCarta.setBounds(x, y, x + imagenCarta.getIconWidth(), y + imagenCarta.getIconHeight());
+
+        //Mostrar la carta en la ventana
+        panel.add(labelCarta);
+    }
+
+  public int obtenerValor(){
         return 0;
     }
 }
