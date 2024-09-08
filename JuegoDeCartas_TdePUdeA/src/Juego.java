@@ -38,6 +38,32 @@ public class Juego extends JFrame {
         this.add(panelBotones, BorderLayout.NORTH);
         this.add(tableroJugadores, BorderLayout.CENTER);
 
+        //Instanciar los Jugadores
+        for(int i = 0;i<jugadores.length;i++){
+            jugadores[i] = new Jugador();
+        }
+
+        //Creacion de funcionalidad del boton repartir
+        this.botonRepatir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for(int i = 0;i < jugadores.length;i++){
+                    jugadores[i].repartir();
+                }
+                jugadores[0].mostrarCarta(panelJugador1, false);
+                jugadores[1].mostrarCarta(panelJugador2, false);
+            }
+        });
+
+        //Creación funcionalidad del boton verificar
+        this.botonVerificar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int pestaña = tableroJugadores.getSelectedIndex();
+                JOptionPane.showMessageDialog(new JFrame(), jugadores[pestaña].obtenerFiguras());
+            }
+        });
+        
         this.setVisible(true);
     }
 }
