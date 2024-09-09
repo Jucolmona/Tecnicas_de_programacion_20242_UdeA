@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Juego extends JFrame {
 
@@ -9,6 +11,8 @@ public class Juego extends JFrame {
     private JPanel panelJugador2;
     private JPanel panelBotones;
     private JTabbedPane tableroJugadores;
+
+    private Jugador[] jugadores = new Jugador[2];
 
     public Juego(){
 
@@ -60,10 +64,11 @@ public class Juego extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int pestaña = tableroJugadores.getSelectedIndex();
-                JOptionPane.showMessageDialog(new JFrame(), jugadores[pestaña].obtenerFiguras());
+                JOptionPane.showMessageDialog(new JFrame(), jugadores[pestaña].obtenerMensaje());
             }
         });
-        
+
         this.setVisible(true);
     }
 }
+
