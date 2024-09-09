@@ -4,7 +4,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class Carta {
-  /*
+    /*
     Esta clase posee la funcionalidad asociada a cada carta
 
     En la clase el número de la carta es generado de forma aleatoria
@@ -20,6 +20,10 @@ public class Carta {
 
     public Carta(Random random){
         this.indice = random.nextInt(52) +1;
+    }
+
+    public int obtenerIndice(){
+        return this.indice;
     }
 
     public Pinta obtenerPinta(){
@@ -48,20 +52,16 @@ public class Carta {
         }
         return NombreCarta.values()[numero];
     }
-  
-    public int obtenerValor(){
-        return 0;
-    }
 
-  public void mostrarCarta(int x, int y, JPanel panel, boolean ocultar) {
+    public void mostrarCarta(int x, int y, JPanel panel, boolean ocultar) {
         /*
          Este metodo recibe las coordenadas donde se ubicara el objeto que mostrará la imagen
          */
         String nombreDeImagen;
         if (ocultar) {
-            nombreDeImagen = "images/TAPADA.JPG";
+            nombreDeImagen = "/images/TAPADA.JPG";
         } else {
-            nombreDeImagen = "images/CARTA" + String.valueOf(this.indice) + ".JPG";
+            nombreDeImagen = "/images/CARTA" + String.valueOf(this.indice) + ".JPG";
         }
         //Cargar imagen
         ImageIcon imagenCarta = new ImageIcon(getClass().getResource(nombreDeImagen));
@@ -76,7 +76,7 @@ public class Carta {
         panel.add(labelCarta);
     }
 
-  public int obtenerValor(){
+    public int obtenerValor(){
         return 0;
     }
 }
