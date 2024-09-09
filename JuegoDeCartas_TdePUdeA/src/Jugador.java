@@ -47,7 +47,27 @@ public class Jugador {
         }
     }
 
-    public String obtenerFiguras(){
+    private void verificarFiguras(int numeroFiguras, int cont[]) {
+        if (numeroFiguras > 0) {
+            figuras = new String[numeroFiguras];
+            cartasFigura = new NombreCarta[numeroFiguras];
+
+            int numFig = 0;
+            for (int i = 0; i < 13; i++) {
+                if (cont[i] >= 3) {
+                    if (cont[i] == 3) {
+                        figuras[numFig] = "TERNA";
+                    } else if (cont[i] == 4) {
+                        figuras[numFig] = "CUARTA";
+                    }
+                    cartasFigura[numFig] = NombreCarta.values()[i + 1];
+                    numFig++;
+                }
+            }
+        }
+    }
+
+    private void obtenerFiguras(){
         /*
         * Devuelve un texto que indica las figuras encontradas, es decir, si hubo pares, ternas, cuartas etc.
         * y de que nombres de las cartas
@@ -73,24 +93,8 @@ public class Jugador {
             }
         }
 
-        if(totalFiguras>0){
-            figuras = new String[totalFiguras];
-            cartasFigura = new NombreCarta[totalFiguras];
+        verificarFiguras(totalFiguras, contadores);
 
-            totalFiguras = 0;
-            for(int i = 0;i < 13;i++){
-                if(contadores[i]>=3){
-                    if(contadores[i] == 3){
-                        figuras[totalFiguras] = "TERNA";
-                    }
-                    else if(contadores[i] == 4){
-                        figuras[totalFiguras] = "CUARTA";
-                    }
-                    cartasFigura[totalFiguras] = NombreCarta.values()[i+1];
-                    totalFiguras++;
-                }
-            }
-        }
 
         if(figuras==null){
             mensaje = "NO SE ENCONTRARON FIGURAS";
@@ -101,6 +105,70 @@ public class Jugador {
                 mensaje += figuras[i] + " de " + cartasFigura[i].toString()+"\n";
             }
         }
+    }
+
+    private void obtenerEscaleras() {
+        int[][] contadores = new int[4][13];
+
+        for (int i = 0; i < cartas.length; i++) {
+            int pintaIndex = cartas[i].obtenerPinta().ordinal() - 1;
+            int valorIndex = cartas[i].obtenerNombre().ordinal() - 1;
+            contadores[pintaIndex][valorIndex]++;
+        }
+
+        StringBuilder resultado = new StringBuilder();
+
+        for (int pinta = 0; pinta < 4; pinta++) {
+            int consecutivas = 0; // Contador de cartas consecutivas
+            int inicioEscalera = -1; // Para marcar el inicio de la escalera
+
+            for (int valor = 0; valor < 13; valor++) {
+                if (contadores[pinta][valor] > 0) {
+                    consecutivas++;
+                    if (consecutivas == 1) {
+                        inicioEscalera = valor;
+                    }
+                    if (consecutivas >= 3) {
+                        resultado.append("ESCALERA DE ").append(Pinta.values()[pinta]).append(": ");
+                        for (int i = inicioEscalera; i <= valor; i++) {
+                            resultado.append(NombreCarta.values()[i]).append(" ");
+                        }
+                        resultado.append("\n");
+                    }
+                } else {
+                    consecutivas = 0;
+                }
+            }
+        }
+        mensaje += resultado.length() > 0 ? resultado.toString() : "\n NO SE ENCONTRARON ESCALERAS.";
+    }
+
+    private void calcularPuntajeCartasNoAgrupadas() {
+        int[] contadores = new int[13];
+        int puntaje = 0;
+        for (Carta carta : cartas) {
+            contadores[carta.obtenerNombre().ordinal() - 1]++;
+        }
+
+        for (int i = 0; i < contadores.length; i++) {
+            if (contadores[i] < 3) {
+                if (i == 0 || i >= 10) {
+                    puntaje += contadores[i] * 10;
+                } else {
+                    puntaje += contadores[i] * (i + 1);
+                }
+            }
+        }
+        mensaje += "\n PUNTAJE: " + Integer.toString(puntaje);
+    }
+
+    public String obtenerMensaje(){
+        obtenerFiguras();
+        obtenerEscaleras();
+        calcularPuntajeCartasNoAgrupadas();
         return mensaje;
     }
+
 }
+
+
